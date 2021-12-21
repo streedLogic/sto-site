@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
+
+@font-face {
+  font-family: "NeueMachinaRegular";
+  src: url("../styles/PPNeueMachina-Regular.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+
+@font-face {
+  font-family: "NeueMachinaBold";
+  src: url("../styles/PPNeueMachina-Bold.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+
+html {
+    font-family: 'Inter';
+}
