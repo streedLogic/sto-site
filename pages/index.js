@@ -12,6 +12,7 @@ import PhotosSection from "../components/photos-section";
 import LeftLines from "../styles/visualleft.svg";
 import RightLines from "../styles/visualright.svg";
 import colors from "../styles/colors";
+import Head from "next/head";
 
 const textBreakPoint = 1200;
 
@@ -21,6 +22,9 @@ const InvestmentSection = styled.div`
   align-items: center;
   width: 100vw;
   height: 942px;
+  position: relative;
+  z-index: 10;
+  background-color: ${colors.white};
 `;
 
 const InvestmentHeadline = styled.div`
@@ -29,6 +33,8 @@ const InvestmentHeadline = styled.div`
 
   h1 {
     color: ${colors.black};
+    position: relative;
+    z-index: 10;
   }
   span {
     background: linear-gradient(to top, ${colors.yellow} 60%, transparent 25%);
@@ -87,28 +93,28 @@ const HeroContainer = styled.div`
 `;
 
 const Animation = styled.canvas`
-  position: -webkit-sticky;
-  position: fixed;
-
+  position: sticky;
   left: 50%;
   top: 15vh;
   width: 50vw;
-  transform: translate(-50%, 0%);
+  transform: translate(-50%, -15%);
   max-height: 100vh;
-
-  z-index: 0;
+  z-index: -1 !important;
   @media (max-width: ${dimensions.maxwidthTablet}px) {
-    transform: translate(0%, -50%);
     width: 100vw;
-    left: 0;
-    top: 50vh;
+    transform: translate(0%, -15%);
+
   }
 `;
 
 const AnimationContainer = styled.div`
   // height: 13500px;
   margin-top: -230px;
-  height: 9715px;
+  position: relative;
+  z-index: 1;
+  height: 20000px;
+  
+
 `;
 
 const LeftVisual = styled.div`
@@ -134,7 +140,7 @@ const RightVisual = styled.div`
 const AnimationText = styled.div`
   width: 100%;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   padding-top: 100px;
 
   h2 {
@@ -174,7 +180,6 @@ const AnimationSubheading = styled.div`
       font-size: 44px;
       width: 100%;
       line-height: 75px;
-
     }
   }
 `;
@@ -421,13 +426,14 @@ const Spacer = styled.div`
 
 const PastAnimationContent = styled.div`
   position: relative;
+
   z-index: 5;
 
   background-color: ${colors.white};
 `;
 
 gsap.registerPlugin(ScrollTrigger);
-export default function Home({ home, logo}) {
+export default function Home({ home, logo }) {
   useEffect(() => {
     console.clear();
     const canvas = document.getElementById("hero-lightpass");
@@ -524,19 +530,35 @@ export default function Home({ home, logo}) {
 
   return (
     <div>
-      <Header current="home" mode="black" image={logo.data.white_logo.url} mobileImage={logo.data.white_logo.url}/>
+      <Head>
+        <title>Stō</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+
+      <Header
+        current="home"
+        mode="black"
+        image={logo.data.white_logo.url}
+        mobileImage={logo.data.white_logo.url}
+      />
       <HeroContainer>
         <LeftVisual>
-          <Img className="left-lines" src={LeftLines} priority/>
+          <Img className="left-lines" src={LeftLines} priority />
         </LeftVisual>
 
         <RightVisual>
-          <Img className="right-lines" src={RightLines} priority/>
+          <Img className="right-lines" src={RightLines} priority />
         </RightVisual>
 
         <AnimationText>
           <AnimationImage>
-            <Img alt="homelogo" src={home.data.icon.url} height={'68px'} width={'66px'} priority/>
+            <Img
+              alt="homelogo"
+              src={home.data.icon.url}
+              height={"68px"}
+              width={"66px"}
+              priority
+            />
           </AnimationImage>
           <AnimationSubheading>
             <h2>{home.data.hero_text}</h2>
@@ -547,108 +569,110 @@ export default function Home({ home, logo}) {
         </AnimationContainer>
       </HeroContainer>
       <PastAnimationContent>
-      <InvestmentSection>
-        <div>
-          <InvestmentHeadline>
-            <h1>
-              the <span>newest</span> way to travel.
-            </h1>
-          </InvestmentHeadline>
-          <InvestmentDescription>
-            <div>
-              {home.data.secondary_section_description.map((paragraph, id) => {
-                return (
-                  <p className={(id = 2 ? "second" : "")} key={id}>
-                    {paragraph.text}
-                  </p>
-                );
-              })}
-            </div>
-          </InvestmentDescription>
+        <InvestmentSection>
+          <div>
+            <InvestmentHeadline>
+              <h1>
+                the <span>newest</span> way to travel.
+              </h1>
+            </InvestmentHeadline>
+            <InvestmentDescription>
+              <div>
+                {home.data.secondary_section_description.map(
+                  (paragraph, id) => {
+                    return (
+                      <p className={(id = 2 ? "second" : "")} key={id}>
+                        {paragraph.text}
+                      </p>
+                    );
+                  }
+                )}
+              </div>
+            </InvestmentDescription>
 
-          <InvestmentCTA>
-            <a href={home.data.cta_link}>{home.data.cta_text}</a>
-          </InvestmentCTA>
-        </div>
-      </InvestmentSection>
+            <InvestmentCTA>
+              <a href={home.data.cta_link}>{home.data.cta_text}</a>
+            </InvestmentCTA>
+          </div>
+        </InvestmentSection>
 
-      <Stats className="stats-section">
-        <WrapperSection className="wrapper">
-          {home.data.section_1.map(function (section, i) {
-            return (
-              <StatSection className="point">
-                <TextSection className="article">
-                  <ColorBlock id={i} />
-                  <SectionTitle id={i}>
-                    <h2> {section.title[0].text}</h2>
-                  </SectionTitle>
-                  <LineSection>
-                    <ColorLine id={i} />
-                    <div>
-                      <BodyText id={i}>
-                        <p> {section.body[0].text} </p>
-                      </BodyText>
-                      <SubText>
-                        <p1> {section.sub_text[0].text} </p1>
-                      </SubText>
-                    </div>
-                  </LineSection>
-                </TextSection>
-
-                <StatImage>
-                  <img className="animated-img" src={section.image.url} />
-                </StatImage>
-              </StatSection>
-            );
-          })}
-
-          {home.data.section_2.map(function (section, i) {
-            return (
-              <StatSection className="point">
-                <TextSection className="article">
-                  <NumberSection>
-                    <NumberText>
+        <Stats className="stats-section">
+          <WrapperSection className="wrapper">
+            {home.data.section_1.map(function (section, i) {
+              return (
+                <StatSection className="point">
+                  <TextSection className="article">
+                    <ColorBlock id={i} />
+                    <SectionTitle id={i}>
+                      <h2> {section.title[0].text}</h2>
+                    </SectionTitle>
+                    <LineSection>
+                      <ColorLine id={i} />
                       <div>
-                        <h2> {section.title[0].text}</h2>
-                        <BigNumber> {section.number[0].text}</BigNumber>
-                        <h3>{section.units[0].text} </h3>
+                        <BodyText id={i}>
+                          <p> {section.body[0].text} </p>
+                        </BodyText>
+                        <SubText>
+                          <p1> {section.sub_text[0].text} </p1>
+                        </SubText>
                       </div>
-                    </NumberText>
+                    </LineSection>
+                  </TextSection>
 
-                    {i == 2 && (
-                      <div>
-                        <BlackRect />
-                        <BlackShape />
-                        <PinkShape />
-                      </div>
-                    )}
-                    {i == 0 && (
-                      <div>
-                        <BlackCircle />
-                        <BlueShape />
-                      </div>
-                    )}
-                  </NumberSection>
-                </TextSection>
-                <StatImage>
-                  <img className="animated-img" src={section.image.url} />
-                </StatImage>
-              </StatSection>
-            );
-          })}
-        </WrapperSection>
-      </Stats>
+                  <StatImage>
+                    <img className="animated-img" src={section.image.url} />
+                  </StatImage>
+                </StatSection>
+              );
+            })}
 
-      <Spacer />
+            {home.data.section_2.map(function (section, i) {
+              return (
+                <StatSection className="point">
+                  <TextSection className="article">
+                    <NumberSection>
+                      <NumberText>
+                        <div>
+                          <h2> {section.title[0].text}</h2>
+                          <BigNumber> {section.number[0].text}</BigNumber>
+                          <h3>{section.units[0].text} </h3>
+                        </div>
+                      </NumberText>
 
-      <IconSection
-        icons={home.data.icons}
-        missionLink={home.data.mission_link[0]}
-      />
-      <PhotosSection photos={home.data.images} />
+                      {i == 2 && (
+                        <div>
+                          <BlackRect />
+                          <BlackShape />
+                          <PinkShape />
+                        </div>
+                      )}
+                      {i == 0 && (
+                        <div>
+                          <BlackCircle />
+                          <BlueShape />
+                        </div>
+                      )}
+                    </NumberSection>
+                  </TextSection>
+                  <StatImage>
+                    <img className="animated-img" src={section.image.url} />
+                  </StatImage>
+                </StatSection>
+              );
+            })}
+          </WrapperSection>
+        </Stats>
+
+        <Spacer />
+
+        <IconSection
+          icons={home.data.icons}
+          missionLink={home.data.mission_link[0]}
+        />
+        <PhotosSection photos={home.data.images} />
       </PastAnimationContent>
 
-      <Footer mode="black"  image={logo.data.white_logo.url} ></Footer>
+      <Footer mode="black" image={logo.data.white_logo.url}></Footer>
     </div>
   );
 }
@@ -664,7 +688,7 @@ export async function getStaticProps() {
   return {
     props: {
       home,
-      logo
+      logo,
     },
   };
 }
